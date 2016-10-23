@@ -1,6 +1,5 @@
 package simple.eclipse.ast.php;
 
-import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.php.internal.core.ast.nodes.ASTError;
 import org.eclipse.php.internal.core.ast.nodes.ASTNode;
 import org.eclipse.php.internal.core.ast.nodes.ArrayAccess;
@@ -8,6 +7,7 @@ import org.eclipse.php.internal.core.ast.nodes.ArrayCreation;
 import org.eclipse.php.internal.core.ast.nodes.ArrayElement;
 import org.eclipse.php.internal.core.ast.nodes.Assignment;
 import org.eclipse.php.internal.core.ast.nodes.BackTickExpression;
+import org.eclipse.php.internal.core.ast.nodes.Block;
 import org.eclipse.php.internal.core.ast.nodes.BreakStatement;
 import org.eclipse.php.internal.core.ast.nodes.CastExpression;
 import org.eclipse.php.internal.core.ast.nodes.CatchClause;
@@ -108,7 +108,7 @@ public class SimpleVisitor extends AbstractVisitor {
 		return true;
 	}
 
-	// @Override
+	@Override
 	public boolean visit(Block block) {
 		return true;
 	}
@@ -128,11 +128,12 @@ public class SimpleVisitor extends AbstractVisitor {
 		return true;
 	}
 
-	// @Override
-	// public boolean visit(ClassConstantDeclaration classConstantDeclaration) {
-	// return true; }
-
 	@Override
+	// public boolean visit(ClassConstantDeclaration classConstantDeclaration) {
+	// return true;
+	// }
+
+	// @Override
 	public boolean visit(ClassDeclaration classDeclaration) {
 		System.out.println("visit(ClassDeclaration):" + classDeclaration.toString());
 		return super.visit(classDeclaration);
@@ -201,95 +202,118 @@ public class SimpleVisitor extends AbstractVisitor {
 		return true;
 	}
 
+	@Override
 	public boolean visit(FieldsDeclaration fieldsDeclaration) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(ForEachStatement forEachStatement) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(FormalParameter formalParameter) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(ForStatement forStatement) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(FunctionDeclaration functionDeclaration) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(FunctionInvocation functionInvocation) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(FunctionName functionName) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(GlobalStatement globalStatement) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(Identifier identifier) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(IfStatement ifStatement) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(IgnoreError ignoreError) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(Include include) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(InfixExpression infixExpression) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(InLineHtml inLineHtml) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(InstanceOfExpression instanceOfExpression) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(InterfaceDeclaration interfaceDeclaration) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(ListVariable listVariable) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(MethodDeclaration methodDeclaration) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(MethodInvocation methodInvocation) {
 		System.out.println("visit(MethodInvocation):" + methodInvocation.toString());
 		return super.visit(methodInvocation);
 	}
 
+	@Override
 	public boolean visit(ParenthesisExpression parenthesisExpression) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(PostfixExpression postfixExpression) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(PrefixExpression prefixExpression) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(Program program) {
 		return true;
 	}
@@ -300,14 +324,17 @@ public class SimpleVisitor extends AbstractVisitor {
 		return super.visit(quote);
 	}
 
+	@Override
 	public boolean visit(Reference reference) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(ReflectionVariable reflectionVariable) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(ReturnStatement returnStatement) {
 		return true;
 	}
@@ -318,51 +345,63 @@ public class SimpleVisitor extends AbstractVisitor {
 		return super.visit(scalar);
 	}
 
+	@Override
 	public boolean visit(SingleFieldDeclaration singleFieldDeclaration) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(StaticConstantAccess classConstantAccess) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(StaticFieldAccess staticFieldAccess) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(StaticMethodInvocation staticMethodInvocation) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(StaticStatement staticStatement) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(SwitchCase switchCase) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(SwitchStatement switchStatement) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(ThrowStatement throwStatement) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(TryStatement tryStatement) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(UnaryOperation unaryOperation) {
 		return true;
 	}
 
+	@Override
 	public boolean visit(Variable variable) {
 		System.out.println("visit(Variable):" + variable.toString());
 		return super.visit(variable);
 	}
 
+	@Override
 	public boolean visit(WhileStatement whileStatement) {
 		return true;
 	}
