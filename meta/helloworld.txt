@@ -1,0 +1,12 @@
+<?php
+class SimplePhpClass
+{
+    // prop def.
+    public $var = 'property value';
+
+    // method def.
+    public function displayVar() {
+        echo $this->var;
+    }
+}
+?>
