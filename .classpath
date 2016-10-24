@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.php.core_4.1.0.201609140517.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.php.core.parser_4.1.0.201609140517.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.dltk.core_5.6.0.201608300412.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
