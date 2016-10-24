@@ -2,6 +2,7 @@ package simple.eclipse.ast.php;
 
 import org.eclipse.php.internal.core.ast.nodes.ASTError;
 import org.eclipse.php.internal.core.ast.nodes.ASTNode;
+import org.eclipse.php.internal.core.ast.nodes.AnonymousClassDeclaration;
 import org.eclipse.php.internal.core.ast.nodes.ArrayAccess;
 import org.eclipse.php.internal.core.ast.nodes.ArrayCreation;
 import org.eclipse.php.internal.core.ast.nodes.ArrayElement;
@@ -17,6 +18,7 @@ import org.eclipse.php.internal.core.ast.nodes.ClassName;
 import org.eclipse.php.internal.core.ast.nodes.CloneExpression;
 import org.eclipse.php.internal.core.ast.nodes.Comment;
 import org.eclipse.php.internal.core.ast.nodes.ConditionalExpression;
+import org.eclipse.php.internal.core.ast.nodes.ConstantDeclaration;
 import org.eclipse.php.internal.core.ast.nodes.ContinueStatement;
 import org.eclipse.php.internal.core.ast.nodes.DeclareStatement;
 import org.eclipse.php.internal.core.ast.nodes.DoStatement;
@@ -25,13 +27,17 @@ import org.eclipse.php.internal.core.ast.nodes.EmptyStatement;
 import org.eclipse.php.internal.core.ast.nodes.ExpressionStatement;
 import org.eclipse.php.internal.core.ast.nodes.FieldAccess;
 import org.eclipse.php.internal.core.ast.nodes.FieldsDeclaration;
+import org.eclipse.php.internal.core.ast.nodes.FinallyClause;
 import org.eclipse.php.internal.core.ast.nodes.ForEachStatement;
 import org.eclipse.php.internal.core.ast.nodes.ForStatement;
 import org.eclipse.php.internal.core.ast.nodes.FormalParameter;
+import org.eclipse.php.internal.core.ast.nodes.FullyQualifiedTraitMethodReference;
 import org.eclipse.php.internal.core.ast.nodes.FunctionDeclaration;
 import org.eclipse.php.internal.core.ast.nodes.FunctionInvocation;
 import org.eclipse.php.internal.core.ast.nodes.FunctionName;
 import org.eclipse.php.internal.core.ast.nodes.GlobalStatement;
+import org.eclipse.php.internal.core.ast.nodes.GotoLabel;
+import org.eclipse.php.internal.core.ast.nodes.GotoStatement;
 import org.eclipse.php.internal.core.ast.nodes.Identifier;
 import org.eclipse.php.internal.core.ast.nodes.IfStatement;
 import org.eclipse.php.internal.core.ast.nodes.IgnoreError;
@@ -40,9 +46,12 @@ import org.eclipse.php.internal.core.ast.nodes.Include;
 import org.eclipse.php.internal.core.ast.nodes.InfixExpression;
 import org.eclipse.php.internal.core.ast.nodes.InstanceOfExpression;
 import org.eclipse.php.internal.core.ast.nodes.InterfaceDeclaration;
+import org.eclipse.php.internal.core.ast.nodes.LambdaFunctionDeclaration;
 import org.eclipse.php.internal.core.ast.nodes.ListVariable;
 import org.eclipse.php.internal.core.ast.nodes.MethodDeclaration;
 import org.eclipse.php.internal.core.ast.nodes.MethodInvocation;
+import org.eclipse.php.internal.core.ast.nodes.NamespaceDeclaration;
+import org.eclipse.php.internal.core.ast.nodes.NamespaceName;
 import org.eclipse.php.internal.core.ast.nodes.ParenthesisExpression;
 import org.eclipse.php.internal.core.ast.nodes.PostfixExpression;
 import org.eclipse.php.internal.core.ast.nodes.PrefixExpression;
@@ -60,12 +69,24 @@ import org.eclipse.php.internal.core.ast.nodes.StaticStatement;
 import org.eclipse.php.internal.core.ast.nodes.SwitchCase;
 import org.eclipse.php.internal.core.ast.nodes.SwitchStatement;
 import org.eclipse.php.internal.core.ast.nodes.ThrowStatement;
+import org.eclipse.php.internal.core.ast.nodes.TraitAlias;
+import org.eclipse.php.internal.core.ast.nodes.TraitAliasStatement;
+import org.eclipse.php.internal.core.ast.nodes.TraitDeclaration;
+import org.eclipse.php.internal.core.ast.nodes.TraitPrecedence;
+import org.eclipse.php.internal.core.ast.nodes.TraitPrecedenceStatement;
+import org.eclipse.php.internal.core.ast.nodes.TraitUseStatement;
 import org.eclipse.php.internal.core.ast.nodes.TryStatement;
 import org.eclipse.php.internal.core.ast.nodes.UnaryOperation;
+import org.eclipse.php.internal.core.ast.nodes.UseStatement;
+import org.eclipse.php.internal.core.ast.nodes.UseStatementPart;
 import org.eclipse.php.internal.core.ast.nodes.Variable;
 import org.eclipse.php.internal.core.ast.nodes.WhileStatement;
+import org.eclipse.php.internal.core.ast.nodes.YieldExpression;
 import org.eclipse.php.internal.core.ast.visitor.AbstractVisitor;
 
+/**
+ * https://github.com/eclipse/pdt/blob/master/plugins/org.eclipse.php.core/src/org/eclipse/php/internal/core/ast/visitor/AbstractVisitor.java
+ */
 public class SimpleVisitor extends AbstractVisitor {
 	@Override
 	public void preVisit(final ASTNode node) {
@@ -75,12 +96,14 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(ASTNode node) {
-		return true;
+		System.out.println("visit(ASTNode): " + node.toString());
+		return super.visit(node);
 	}
 
 	@Override
 	public boolean visit(ArrayAccess arrayAccess) {
-		return true;
+		System.out.println("visit(arrayAccess): " + arrayAccess.toString());
+		return super.visit(arrayAccess);
 	}
 
 	@Override
@@ -95,7 +118,8 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(Assignment assignment) {
-		return true;
+		System.out.println("visit(assignment): " + assignment.toString());
+		return super.visit(assignment);
 	}
 
 	@Override
@@ -129,11 +153,12 @@ public class SimpleVisitor extends AbstractVisitor {
 	}
 
 	@Override
-	// public boolean visit(ClassConstantDeclaration classConstantDeclaration) {
-	// return true;
-	// }
+	public boolean visit(ConstantDeclaration constantDeclaration) {
+		System.out.println("visit(constantDeclaration): " + constantDeclaration.toString());
+		return super.visit(constantDeclaration);
+	}
 
-	// @Override
+	@Override
 	public boolean visit(ClassDeclaration classDeclaration) {
 		System.out.println("visit(ClassDeclaration):" + classDeclaration.toString());
 		return super.visit(classDeclaration);
@@ -141,12 +166,14 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(ClassInstanceCreation classInstanceCreation) {
-		return true;
+		System.out.println("visit(classInstanceCreation): " + classInstanceCreation.toString());
+		return super.visit(classInstanceCreation);
 	}
 
 	@Override
 	public boolean visit(ClassName className) {
-		return true;
+		System.out.println("visit(className): " + className.toString());
+		return super.visit(className);
 	}
 
 	@Override
@@ -162,7 +189,8 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(ConditionalExpression conditionalExpression) {
-		return true;
+		System.out.println("visit(conditionalExpression): " + conditionalExpression.toString());
+		return super.visit(conditionalExpression);
 	}
 
 	@Override
@@ -172,7 +200,8 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(DeclareStatement declareStatement) {
-		return true;
+		System.out.println("visit(declareStatement): " + declareStatement.toString());
+		return super.visit(declareStatement);
 	}
 
 	@Override
@@ -199,12 +228,14 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(FieldAccess fieldAccess) {
-		return true;
+		System.out.println("visit(fieldAccess): " + fieldAccess.toString());
+		return super.visit(fieldAccess);
 	}
 
 	@Override
 	public boolean visit(FieldsDeclaration fieldsDeclaration) {
-		return true;
+		System.out.println("visit(fieldsDeclaration): " + fieldsDeclaration.toString());
+		return super.visit(fieldsDeclaration);
 	}
 
 	@Override
@@ -214,7 +245,8 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(FormalParameter formalParameter) {
-		return true;
+		System.out.println("visit(formalParameter): " + formalParameter.toString());
+		return super.visit(formalParameter);
 	}
 
 	@Override
@@ -224,7 +256,8 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(FunctionDeclaration functionDeclaration) {
-		return true;
+		System.out.println("visit(functionDeclaration): " + functionDeclaration.toString());
+		return super.visit(functionDeclaration);
 	}
 
 	@Override
@@ -234,17 +267,30 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(FunctionName functionName) {
-		return true;
+		System.out.println("visit(functionName): " + functionName.toString());
+		return super.visit(functionName);
 	}
 
 	@Override
 	public boolean visit(GlobalStatement globalStatement) {
+		System.out.println("visit(globalStatement): " + globalStatement.toString());
+		return super.visit(globalStatement);
+	}
+
+	@Override
+	public boolean visit(GotoLabel gotoLabel) {
+		return true;
+	}
+
+	@Override
+	public boolean visit(GotoStatement gotoStatement) {
 		return true;
 	}
 
 	@Override
 	public boolean visit(Identifier identifier) {
-		return true;
+		System.out.println("visit(identifier): " + identifier.toString());
+		return super.visit(identifier);
 	}
 
 	@Override
@@ -259,7 +305,8 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(Include include) {
-		return true;
+		System.out.println("visit(include): " + include.toString());
+		return super.visit(include);
 	}
 
 	@Override
@@ -279,6 +326,17 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(InterfaceDeclaration interfaceDeclaration) {
+		System.out.println("visit(interfaceDeclaration): " + interfaceDeclaration.toString());
+		return super.visit(interfaceDeclaration);
+	}
+
+	@Override
+	public boolean visit(LambdaFunctionDeclaration lambdaFunctionDeclaration) {
+		return true;
+	}
+
+	@Override
+	public boolean visit(AnonymousClassDeclaration anonymousClassDeclaration) {
 		return true;
 	}
 
@@ -289,13 +347,26 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(MethodDeclaration methodDeclaration) {
-		return true;
+		System.out.println("visit(methodDeclaration): " + methodDeclaration.toString());
+		return super.visit(methodDeclaration);
 	}
 
 	@Override
 	public boolean visit(MethodInvocation methodInvocation) {
 		System.out.println("visit(MethodInvocation):" + methodInvocation.toString());
 		return super.visit(methodInvocation);
+	}
+
+	@Override
+	public boolean visit(NamespaceDeclaration namespaceDeclaration) {
+		System.out.println("visit(namespaceDeclaration):" + namespaceDeclaration.toString());
+		return super.visit(namespaceDeclaration);
+	}
+
+	@Override
+	public boolean visit(NamespaceName namespaceName) {
+		System.out.println("visit(namespaceName):" + namespaceName.toString());
+		return super.visit(namespaceName);
 	}
 
 	@Override
@@ -326,7 +397,8 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(Reference reference) {
-		return true;
+		System.out.println("visit(reference): " + reference.toString());
+		return super.visit(reference);
 	}
 
 	@Override
@@ -340,6 +412,11 @@ public class SimpleVisitor extends AbstractVisitor {
 	}
 
 	@Override
+	public boolean visit(YieldExpression YieldExpression) {
+		return true;
+	}
+
+	@Override
 	public boolean visit(Scalar scalar) {
 		System.out.println("visit(Scalar):" + scalar.toString());
 		return super.visit(scalar);
@@ -347,7 +424,8 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(SingleFieldDeclaration singleFieldDeclaration) {
-		return true;
+		System.out.println("visit(singleFieldDeclaration): " + singleFieldDeclaration.toString());
+		return super.visit(singleFieldDeclaration);
 	}
 
 	@Override
@@ -357,7 +435,8 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(StaticFieldAccess staticFieldAccess) {
-		return true;
+		System.out.println("visit(staticFieldAccess): " + staticFieldAccess.toString());
+		return super.visit(staticFieldAccess);
 	}
 
 	@Override
@@ -367,7 +446,8 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(StaticStatement staticStatement) {
-		return true;
+		System.out.println("visit(staticStatement): " + staticStatement.toString());
+		return super.visit(staticStatement);
 	}
 
 	@Override
@@ -396,6 +476,17 @@ public class SimpleVisitor extends AbstractVisitor {
 	}
 
 	@Override
+	public boolean visit(UseStatement useStatement) {
+		System.out.println("visit(useStatement): " + useStatement.toString());
+		return super.visit(useStatement);
+	}
+
+	@Override
+	public boolean visit(UseStatementPart useStatementPart) {
+		return true;
+	}
+
+	@Override
 	public boolean visit(Variable variable) {
 		System.out.println("visit(Variable):" + variable.toString());
 		return super.visit(variable);
@@ -403,6 +494,42 @@ public class SimpleVisitor extends AbstractVisitor {
 
 	@Override
 	public boolean visit(WhileStatement whileStatement) {
+		return true;
+	}
+
+	// php5.4 starts
+
+	public boolean visit(FullyQualifiedTraitMethodReference node) {
+		return true;
+	}
+
+	public boolean visit(TraitAlias node) {
+		return true;
+	}
+
+	public boolean visit(TraitAliasStatement node) {
+		return true;
+	}
+
+	public boolean visit(TraitDeclaration node) {
+		return true;
+	}
+
+	public boolean visit(TraitPrecedence node) {
+		return true;
+	}
+
+	public boolean visit(TraitPrecedenceStatement node) {
+		return true;
+	}
+
+	public boolean visit(TraitUseStatement node) {
+		return true;
+	}
+
+	// php5.4 ends
+
+	public boolean visit(FinallyClause node) {
 		return true;
 	}
 }

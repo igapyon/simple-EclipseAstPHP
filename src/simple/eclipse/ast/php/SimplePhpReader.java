@@ -18,6 +18,7 @@ public class SimplePhpReader {
 			if (line == null)
 				break;
 			buf.append(line);
+			buf.append('\n');
 		}
 		reader.close();
 
